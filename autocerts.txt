@@ -1,0 +1,16 @@
+function makessl {
+    sudo certbot certonly --manual --rsa-key-size 4096 --preferred-challenges dns -d ${1}
+    sudo heroku certs:add --type=sni /etc/letsencrypt/live/${1}/fullchain.pem /etc/letsencrypt/live/${1}/privkey.pem
+}
+
+function renewssl {
+    sudo certbot certonly --manual --rsa-key-size 4096 --preferred-challenges dns -d ${1}
+    sudo heroku certs:update /etc/letsencrypt/live/${1}/fullchain.pem /etc/letsencrypt/live/${1}/privkey.pem
+}
+
+
+# They take an arguement for the domain name and as long as you run them from within your heroku app folder you will not have to specify an --app NAME
+
+# Example: makessl www.domain.com
+
+# Example: renewssl www.domain.com
